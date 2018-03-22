@@ -4,54 +4,39 @@
     <meta charset="UTF-8">
     <title>typer</title>
     <link rel="stylesheet" href="https://unpkg.com/tachyons@4.9.1/css/tachyons.min.css"/>
-    <style> 
-      * {
-        margin: 0;
-        padding: 0;
-      }
-
-      html, body {
-        width: 100%;
-        height: 100%;
-      }
-      
-      canvas {
-        width: 100%;
-        height: 100%;
-        margin-top: -240px;
-        position: absolute;
-      }
-
-      .buttons {
-        margin-left: 40%;
-        margin-top: 20%;
-        position: absolute;
-      }
-
-      .button {
-        visibility: hidden;
-        font-size: 1.5rem;
-        cursor: pointer;
-      }
-
-    </style>
-    <script src="app.js"></script>
-  </head>
+    <link rel="stylesheet" href="styles.css" type="text/css"/>   
+    <script src="game.js"></script>   
+</head>
   <body>
-    <nav class="pa3 pa4-ns">
+    <nav role="navigation" class="pa3 pa4-ns">
       <a class="link dim black b f1 f-headline-ns tc db mb3 mb4-ns" href="#home" title="Home">Typer</a>
       <div class="tc pb3">
         <a class="link dim gray f6 f5-ns dib mr3" href="#home" title="Home">Home</a>
+        <a class="link dim gray f6 f5-ns dib mr3" href="#game" title="Game" onclick="begin()">Game</a>
         <a class="link dim gray f6 f5-ns dib mr3" href="#leaderboard" title="Leaderboard">Leaderboard</a>
-        <a class="link dim gray f6 f5-ns dib mr3" href="#game" title="Game">Game</a>
       </div>
       <hr>
     </nav>
-    <div id="app"></div>
-    <div class="buttons">
-      <a class="button f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-navy" id="newGame" onclick="newTyper()">Uus mäng</a>
-      <a class="button f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-navy" id="mainPage">Pealehele</a>
-    </div>
-    <canvas></canvas>
+    <main role="main">
+      <div id="game">
+        <h1>Game</h1>
+        <div class="buttons">
+          <a class="button f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-navy" id="newGame" onclick="newTyper()">Uus mäng</a>
+        </div>
+        <canvas></canvas>
+      </div>
+      <div id="leaderboard">
+        <h1>TOP 10</h1>
+        <table id="highscores">
+          <thead><tr><th>Player</th><th>Score</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div id="default">
+        <h1>Default view</h1>
+      </div>
+    </main>
   </body>
+  <script src="app.js"></script>
+  <!-- <script src="leaderboard.js"></script> -->
 </html>

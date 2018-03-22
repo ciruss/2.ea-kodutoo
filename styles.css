@@ -1,0 +1,60 @@
+main > * {
+  display: none;
+}
+
+main > *:last-child {
+  display: block;
+}
+
+main > *:target {
+  display: block;
+}
+
+main > *:target ~ * {
+  display: none;
+}
+
+/* * {
+  margin: 0;
+  padding: 0;
+} */
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+canvas {
+  width: 100%;
+  height: calc(100% - 240px);
+  position: absolute;
+}
+
+.buttons {
+  margin-left: 40%;
+  margin-top: 20%;
+  position: absolute;
+}
+
+.button {
+  visibility: hidden;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+#leaderboard, #highscores {
+  text-align: center;
+}
+
+table {
+  margin: 0 auto;
+  margin-top: 30px;
+}
+
+th {
+  padding: 20px;
+}
+
+td {
+  padding: 5px;
+}

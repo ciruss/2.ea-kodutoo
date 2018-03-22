@@ -1,180 +1,55 @@
-/* TYPER */
-const TYPER = function () {
-  if (TYPER.instance_) {
-    return TYPER.instance_
-  }
-  TYPER.instance_ = this
+(function () {
+  var app = {
+    // routes (i.e. views and their functionality) defined here
+    'routes': {
+      'game': {
+        'rendered': function () {
+        }
+      },
+      'leaderboard': {
+        'rendered': function () {
+          let table = document.getElementsByTagName('tbody')[0]
+          let rowCount = table.rows.length
+          for (var i = rowCount; i > 0; i--) {
+            table.deleteRow(i)
+          }
+          let scores = JSON.parse(localStorage.getItem('players'))
+          let topScore = scores.sort((a, b) => a.score > b.score ? -1 : 1)
 
-  this.WIDTH = window.innerWidth
-  this.HEIGHT = window.innerHeight
-  this.canvas = null
-  this.ctx = null
-
-  this.words = []
-  this.word = null
-  this.wordMinLength = 5
-  this.guessedWords = 0
-  this.score = 0
-
-  this.init()
-}
-
-window.TYPER = TYPER
-
-TYPER.prototype = {
-  init: function () {
-    this.canvas = document.getElementsByTagName('canvas')[0]
-    this.ctx = this.canvas.getContext('2d')
-
-    this.canvas.style.width = this.WIDTH + 'px'
-    this.canvas.style.height = this.HEIGHT + 'px'
-
-    this.canvas.width = this.WIDTH * 2
-    this.canvas.height = this.HEIGHT * 2
-
-    this.loadWords()
-  },
-
-  loadWords: function () {
-    const xmlhttp = new XMLHttpRequest()
-
-    xmlhttp.onreadystatechange = function () {
-      if (xmlhttp.readyState === 4 && (xmlhttp.status === 200 || xmlhttp.status === 0)) {
-        const response = xmlhttp.responseText
-        const wordsFromFile = response.split('\n')
-
-        typer.words = structureArrayByWordLength(wordsFromFile)
-
-        typer.start()
+          for (let i = 0; i < (scores.length > 10 ? 10 : scores.length); i++) {
+            table.innerHTML += '<tr><td>' + topScore[i].player + '</td><td>' +
+              topScore[i].score + '</td></tr>'
+          }
+        }
+      }
+    },
+    // The default view is recorded here. A more advanced implementation
+    // might query the DOM to define it on the fly.
+    'default': 'the-default-view',
+    'routeChange': function () {
+      app.routeID = location.hash.slice(1)
+      app.route = app.routes[app.routeID]
+      app.routeElem = document.getElementById(app.routeID)
+      if (app.route) {
+        app.route.rendered()
+      }
+    },
+    // The function to start the app
+    'init': function () {
+      window.addEventListener('hashchange', function () {
+        app.routeChange()
+      })
+      // If there is no hash in the URL, change the URL to
+      // include the default view's hash.
+      if (!window.location.hash) {
+        window.location.hash = app.default
+      } else {
+        // Execute routeChange() for the first time
+        app.routeChange()
       }
     }
-
-    xmlhttp.open('GET', './lemmad2013.txt', true)
-    xmlhttp.send()
-  },
-
-  start: function () {
-    this.generateWord()
-    this.word.Draw()
-
-    window.addEventListener('keypress', this.keyPressed.bind(this))
-
-    this.startTime = new Date().getTime()
-    this.timer = window.setInterval(this.loop.bind(this), 1)
-  },
-
-  loop: function () {
-    const currentTime = new Date().getTime()
-    this.counter = currentTime - this.startTime
-    this.word.Draw()
-    this.stop()
-  },
-
-  user: function () {
-    let players = JSON.parse(localStorage.getItem('players'))
-    if (players === null) players = []
-    let user = prompt(`Sinu skoor oli ${this.score}\nKui tahad tulemust salvestada siis sisesta oma nimi!`)
-    if (user !== null && user !== '') {
-      let player = {
-        'player': user,
-        'score': this.score
-      }
-      localStorage.setItem('player', JSON.stringify(player))
-      players.push(player)
-      localStorage.setItem('players', JSON.stringify(players))
-    }
-  },
-
-  stop: function () {
-    if (this.counter >= 10000) {
-      clearInterval(this.timer)
-      this.user()
-      this.canvas.remove()
-      this.new()
-    }
-  },
-
-  new: function () {
-    this.canvas.remove()
-    clearInterval(this.timer)
-    document.getElementById('newGame').style.visibility = 'visible'
-    document.getElementById('mainPage').style.visibility = 'visible'
-  },
-
-  generateWord: function () {
-    const generatedWordLength = this.wordMinLength + parseInt(this.guessedWords / 5)
-    const randomIndex = (Math.random() * (this.words[generatedWordLength].length - 1)).toFixed()
-    const wordFromArray = this.words[generatedWordLength][randomIndex]
-
-    this.word = new Word(wordFromArray, this.canvas, this.ctx)
-  },
-
-  keyPressed: function (event) {
-    const letter = String.fromCharCode(event.which)
-    console.log(event)
-
-    if (letter === this.word.left.charAt(0)) {
-      this.word.removeFirstLetter()
-
-      if (this.word.left.length === 0) {
-        this.guessedWords += 1
-        this.score = this.guessedWords * 5
-        console.log(this.score)
-
-        this.generateWord()
-      }
-
-      this.word.Draw()
-    }
-    document.addEventListener('keyup', event => {
-      if (event.which === 27) {
-        this.new()
-      }
-    })
   }
-}
+  window.app = app
+})()
 
-/* WORD */
-const Word = function (word, canvas, ctx) {
-  this.word = word
-  this.left = this.word
-  this.canvas = canvas
-  this.ctx = ctx
-}
-
-Word.prototype = {
-  Draw: function () {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
-    this.ctx.textAlign = 'center'
-    this.ctx.font = '140px Courier'
-    this.ctx.fillText(this.left, this.canvas.width / 2, this.canvas.height / 2)
-  },
-
-  removeFirstLetter: function () {
-    this.left = this.left.slice(1)
-  }
-}
-
-/* HELPERS */
-function structureArrayByWordLength (words) {
-  let tempArray = []
-
-  for (let i = 0; i < words.length; i++) {
-    const wordLength = words[i].length
-    if (tempArray[wordLength] === undefined)tempArray[wordLength] = []
-
-    tempArray[wordLength].push(words[i])
-  }
-
-  return tempArray
-}
-
-window.onload = function () {
-  const typer = new TYPER()
-  window.typer = typer
-}
-
-const newTyper = () => {
-  location.reload()
-}
+app.init()
