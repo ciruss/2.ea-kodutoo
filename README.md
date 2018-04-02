@@ -13,7 +13,7 @@ Mängu eesmärk on võimalikult kiiresti ekraanile tekkivaid sõnu ära trükkid
     
 ## Skeem:
     
-    ![alt text](Scheme.png)    
+    ![](https://github.com/ciruss/2.ea-kodutoo/blob/master/Scheme.png)
 
 ## Nõuded
 
