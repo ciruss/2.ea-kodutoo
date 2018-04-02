@@ -28,10 +28,10 @@ TYPER.prototype = {
     this.ctx = this.canvas.getContext('2d')
 
     this.canvas.style.width = this.WIDTH + 'px'
-    this.canvas.style.height = (this.HEIGHT - 465) + 'px'
+    this.canvas.style.height = (this.HEIGHT - 800) + 'px'
 
     this.canvas.width = this.WIDTH * 2
-    this.canvas.height = this.HEIGHT * 1.3
+    this.canvas.height = this.HEIGHT * 0.3
 
     this.loadWords()
   },
