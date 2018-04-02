@@ -12,16 +12,23 @@
       <a class="link dim black b f1 f-headline-ns tc db mb3 mb4-ns" href="#home" title="Home">Typer</a>
       <div class="tc pb3">
         <a class="link dim gray f6 f5-ns dib mr3" href="#home" title="Home">Home</a>
-        <a class="link dim gray f6 f5-ns dib mr3" href="#game" title="Game" onclick="begin()">Game</a>
+        <a class="link dim gray f6 f5-ns dib mr3" href="#game" title="Game">Game</a>
         <a class="link dim gray f6 f5-ns dib mr3" href="#leaderboard" title="Leaderboard">Leaderboard</a>
       </div>
       <hr>
     </nav>
     <main role="main">
       <div id="game">
-        <h1>Game</h1>
-        <div class="buttons">
-          <a class="button f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-navy" id="newGame" onclick="newTyper()">Uus mäng</a>
+        <div id="timer">
+          <p>Enter the time you'd like the game do last (in seconds)</p>
+          <form>
+            <input placeholder="time" id="time" type="number">
+            <input placeholder="wordLength, max 31" id="wordLength" type="number" maxlength="31">
+          </form>
+          <a class="button grow no-underline br-pill ph3 mb2 white bg-navy" id="start" onclick="begin()">Begin</a>
+        </div>
+        <div class="button">
+          <a class="button f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-navy" id="newGame" onclick="location.reload()">New Game</a>
         </div>
         <canvas></canvas>
       </div>
@@ -33,10 +40,12 @@
         </table>
       </div>
       <div id="default">
-        <h1>Default view</h1>
+        <p>Typer is a game where you need to type in the words that appear on the screen as fast as possible.</p>
+        <p>In the game section of the app you can choose the time frame and the lenght of the word you start with.</p>
+        <p>For every correctly typed word you get points (equal to the length of the word)</p>
+        <p>You get a minus point for every wrong letter you type in.</p>
       </div>
     </main>
   </body>
   <script src="app.js"></script>
-  <!-- <script src="leaderboard.js"></script> -->
 </html>

@@ -8,10 +8,10 @@
       },
       'leaderboard': {
         'rendered': function () {
-          let table = document.getElementsByTagName('tbody')[0]
+          const table = document.getElementsByTagName('tbody')[0]
           let rowCount = table.rows.length
-          for (var i = rowCount; i > 0; i--) {
-            table.deleteRow(i)
+          for (let i = rowCount; i > 0; i--) {
+            table.deleteRow(i - 1)
           }
           let scores = JSON.parse(localStorage.getItem('players'))
           let topScore = scores.sort((a, b) => a.score > b.score ? -1 : 1)

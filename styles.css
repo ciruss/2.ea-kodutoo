@@ -14,36 +14,9 @@ main > *:target ~ * {
   display: none;
 }
 
-/* * {
-  margin: 0;
-  padding: 0;
-} */
-
 html, body {
   width: 100%;
   height: 100%;
-}
-
-canvas {
-  width: 100%;
-  height: calc(100% - 240px);
-  position: absolute;
-}
-
-.buttons {
-  margin-left: 40%;
-  margin-top: 20%;
-  position: absolute;
-}
-
-.button {
-  visibility: hidden;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-#leaderboard, #highscores {
-  text-align: center;
 }
 
 table {
@@ -57,4 +30,43 @@ th {
 
 td {
   padding: 5px;
+}
+
+.button {
+  width: 200px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  text-align: center;
+  display: block;
+}
+
+#leaderboard, #highscores, #default, #timer, #start {
+  text-align: center;
+}
+
+#start {
+  width: 150px;
+  font-size: 1.8rem;
+}
+
+#timer, .button {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+}
+
+#default, p {
+  font-size: 22px;
+}
+
+#timer {
+  width: 40%;
+}
+
+#newGame {
+  visibility: hidden;  
+}
+
+#time, #wordLength {
+  text-align: right;
 }

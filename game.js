@@ -12,9 +12,10 @@ const TYPER = function () {
 
   this.words = []
   this.word = null
-  this.wordMinLength = 5
+  this.lengthOfWord = parseInt(document.getElementById('wordLength').value)
   this.guessedWords = 0
   this.score = 0
+  this.minusScore = 0
 
   this.init()
 }
@@ -27,10 +28,10 @@ TYPER.prototype = {
     this.ctx = this.canvas.getContext('2d')
 
     this.canvas.style.width = this.WIDTH + 'px'
-    this.canvas.style.height = this.HEIGHT + 'px'
+    this.canvas.style.height = (this.HEIGHT - 465) + 'px'
 
     this.canvas.width = this.WIDTH * 2
-    this.canvas.height = this.HEIGHT * 2
+    this.canvas.height = this.HEIGHT * 1.3
 
     this.loadWords()
   },
@@ -44,7 +45,6 @@ TYPER.prototype = {
         const wordsFromFile = response.split('\n')
 
         typer.words = structureArrayByWordLength(wordsFromFile)
-
         typer.start()
       }
     }
@@ -73,11 +73,11 @@ TYPER.prototype = {
   user: function () {
     let players = JSON.parse(localStorage.getItem('players'))
     if (players === null) players = []
-    let user = prompt(`Sinu skoor oli ${this.score}\nKui tahad tulemust salvestada siis sisesta oma nimi!`)
+    let user = prompt(`Your score is ${this.score}\nif you want do save your score enter your name!`)
     if (user !== null && user !== '') {
       let player = {
         'player': user,
-        'score': this.score
+        'score': this.score - this.minusScore
       }
       localStorage.setItem('player', JSON.stringify(player))
       players.push(player)
@@ -86,7 +86,9 @@ TYPER.prototype = {
   },
 
   stop: function () {
-    if (this.counter >= 10000) {
+    const time = document.getElementById('time').value
+
+    if (this.counter >= parseInt(time + '000')) {
       clearInterval(this.timer)
       this.user()
       this.canvas.remove()
@@ -101,7 +103,7 @@ TYPER.prototype = {
   },
 
   generateWord: function () {
-    const generatedWordLength = this.wordMinLength + parseInt(this.guessedWords / 5)
+    const generatedWordLength = this.lengthOfWord + parseInt(this.guessedWords / 5)
     const randomIndex = (Math.random() * (this.words[generatedWordLength].length - 1)).toFixed()
     const wordFromArray = this.words[generatedWordLength][randomIndex]
 
@@ -111,20 +113,23 @@ TYPER.prototype = {
   keyPressed: function (event) {
     const letter = String.fromCharCode(event.which)
 
+    if (letter !== this.word.left.charAt(0)) {
+      this.minusScore += 1
+    }
+
     if (letter === this.word.left.charAt(0)) {
       this.word.removeFirstLetter()
 
       if (this.word.left.length === 0) {
         this.guessedWords += 1
-        this.score = this.guessedWords * 5
-        console.log(this.score)
-
+        this.score = (this.guessedWords * this.lengthOfWord) - this.minusScore
         this.generateWord()
       }
 
       this.word.Draw()
     }
-    document.addEventListener('keyup', event => {
+
+    document.addEventListener('keydown', event => {
       if (event.which === 27) {
         this.new()
       }
@@ -169,10 +174,7 @@ function structureArrayByWordLength (words) {
 }
 
 const begin = function () {
+  document.getElementById('timer').style.display = 'none'
   const typer = new TYPER()
   window.typer = typer
-}
-
-const newTyper = () => {
-  location.reload()
 }
