@@ -7,7 +7,13 @@ Mängu eesmärk on võimalikult kiiresti ekraanile tekkivaid sõnu ära trükkid
 ## Autor: Johan Laas
 
 ## Skoor: 
-    Skoor moodustub õigesti trükitud sõnade kogusummast, iga tähe trükkimise eest saab punkti ja iga valesti vajutatud tähe eest läheb 1 punkt maha
+
+    Skoor moodustub õigesti trükitud sõnade kogusummast, iga tähe trükkimise eest saab punkti
+    ja iga valesti vajutatud tähe eest läheb 1 punkt maha
+    
+## Skeem:
+    
+    ![alt text](Scheme.png)    
 
 ## Nõuded
 
